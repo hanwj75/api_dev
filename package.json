@@ -1,0 +1,21 @@
+{
+  "name": "api_dev",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/hanwj75/api_dev.git",
+  "author": "hanwj75 <wjws9608@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "joi": "^17.13.3",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  }
+}

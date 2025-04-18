@@ -1,0 +1,26 @@
+{
+    "sourceFile": "src/config/config.js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1744963146403,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1744963154013,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,4 +7,6 @@\n     PORT: env.PORT || 3000,\r\n     HOST: env.HOST || \"localhost\",\r\n   },\r\n };\r\n+\r\n+export default config;\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1744963381791,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,10 +3,9 @@\n const env = envFiles.server;\r\n \r\n const config = {\r\n   server: {\r\n-    PORT: env.PORT || 3000,\r\n-    HOST: env.HOST || \"localhost\",\r\n+PORT : env.PORT\r\n   },\r\n };\r\n \r\n export default config;\r\n"
+                }
+            ],
+            "date": 1744963146403,
+            "name": "Commit-0",
+            "content": "import envFiles from \"../constants/env.js\";\r\n\r\nconst env = envFiles.server;\r\n\r\nconst config = {\r\n  server: {\r\n    PORT: env.PORT || 3000,\r\n    HOST: env.HOST || \"localhost\",\r\n  },\r\n}"
+        }
+    ]
+}
