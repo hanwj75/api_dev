@@ -6,21 +6,21 @@
             "activePatchIndex": 2,
             "patches": [
                 {
-                    "date": 1744963146403,
+                    "date": 1745070176507,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
                 },
                 {
-                    "date": 1744963154013,
-                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,4 +7,6 @@\n     PORT: env.PORT || 3000,\r\n     HOST: env.HOST || \"localhost\",\r\n   },\r\n };\r\n+\r\n+export default config;\n\\ No newline at end of file\n"
+                    "date": 1745070329339,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,7 @@\n import envFiles from \"../constants/env.js\";\r\n \r\n-const env = envFiles.database;\r\n+const env = envFiles.server;\r\n \r\n const config = {\r\n   server: {\r\n     PORT: env.PORT,\r\n"
                 },
                 {
-                    "date": 1744963381791,
-                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,10 +3,9 @@\n const env = envFiles.server;\r\n \r\n const config = {\r\n   server: {\r\n-    PORT: env.PORT || 3000,\r\n-    HOST: env.HOST || \"localhost\",\r\n+PORT : env.PORT\r\n   },\r\n };\r\n \r\n export default config;\r\n"
+                    "date": 1745070367069,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,23 +6,8 @@\n   server: {\r\n     PORT: env.PORT,\r\n     HOST: env.HOST,\r\n   },\r\n-  database: {\r\n-    USER_DB: {\r\n-      host: env.DB1_HOST,\r\n-      port: env.DB1_PORT,\r\n-      user: env.DB1_USER,\r\n-      password: env.DB1_PASSWORD,\r\n-      name: env.DB1_NAME,\r\n-    },\r\n-    POST_DB: {\r\n-      host: env.DB2_HOST,\r\n-      port: env.DB2_PORT,\r\n-      user: env.DB2_USER,\r\n-      password: env.DB2_PASSWORD,\r\n-      name: env.DB2_NAME,\r\n-    },\r\n-  },\r\n+\r\n };\r\n \r\n export default config;\r\n"
                 }
             ],
-            "date": 1744963146403,
+            "date": 1745070176507,
             "name": "Commit-0",
-            "content": "import envFiles from \"../constants/env.js\";\r\n\r\nconst env = envFiles.server;\r\n\r\nconst config = {\r\n  server: {\r\n    PORT: env.PORT || 3000,\r\n    HOST: env.HOST || \"localhost\",\r\n  },\r\n}"
+            "content": "import envFiles from \"../constants/env.js\";\r\n\r\nconst env = envFiles.database;\r\n\r\nconst config = {\r\n  server: {\r\n    PORT: env.PORT,\r\n    HOST: env.HOST,\r\n  },\r\n  database: {\r\n    USER_DB: {\r\n      host: env.DB1_HOST,\r\n      port: env.DB1_PORT,\r\n      user: env.DB1_USER,\r\n      password: env.DB1_PASSWORD,\r\n      name: env.DB1_NAME,\r\n    },\r\n    POST_DB: {\r\n      host: env.DB2_HOST,\r\n      port: env.DB2_PORT,\r\n      user: env.DB2_USER,\r\n      password: env.DB2_PASSWORD,\r\n      name: env.DB2_NAME,\r\n    },\r\n  },\r\n};\r\n\r\nexport default config;\r\n"
         }
     ]
 }
