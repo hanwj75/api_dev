@@ -10,7 +10,7 @@ const createPool = (dbConfig) => {
     port: dbConfig.port,
     user: dbConfig.user,
     password: dbConfig.password,
-    name: dbConfig.name,
+    database: dbConfig.name,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
