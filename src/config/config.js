@@ -5,6 +5,7 @@ const env = envFiles.server;
 const config = {
   server: {
     PORT: env.PORT,
+    HOST: env.HOST,
   },
 };
 
