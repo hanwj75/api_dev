@@ -1,19 +1,14 @@
 import express from "express";
 import config from "./src/config/config.js";
 import initServer from "./src/init/index.js";
+import userRouter from "./src/routes/user.router.js";
 
 const app = express();
 const { server } = config;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("main");
-});
-
-app.get("/api", (req, res) => {
-  res.send("api test");
-});
+app.use("/api", [userRouter]);
 
 initServer()
   .then(() => {
