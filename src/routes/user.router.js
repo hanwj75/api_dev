@@ -132,4 +132,32 @@ router.patch("/users/:userId", async (req, res) => {
   }
 });
 
+/**
+ * @desc 회원탈퇴 API
+ */
+
+router.delete("/users/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { password } = req.body;
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "존재하지 않는 사용자입니다." });
+    }
+
+    // 비밀번호 확인
+    const passwordCheck = await bcrypt.compare(password, user.password);
+
+    if (!passwordCheck) {
+      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+    }
+
+    await deleteUserData(userId);
+    return res.status(200).json({ message: "계정이 삭제되었습니다." });
+  } catch (err) {
+    console.error("회원정보 삭제 에러:", err);
+    return res.status(500).json({ message: "회원정보 삭제 처리 중 오류가 발생했습니다." });
+  }
+});
+
 export default router;
