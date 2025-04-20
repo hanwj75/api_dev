@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import { createUser, findUserById, findUserByName } from "../db/user/user.db.js";
+import { createUser, findUserById, findUserByName, updateUserLogin } from "../db/user/user.db.js";
 
 const router = express.Router();
 
@@ -9,10 +9,11 @@ const router = express.Router();
  */
 
 router.post("/sign-up", async (req, res) => {
-  // 요청값
-  const { userId, password, passwordCheck, nickName } = req.body;
   try {
-    //동일 아이디, 닉네임 조회회
+    // 요청값
+    const { userId, password, passwordCheck, nickName } = req.body;
+
+    //동일 아이디, 닉네임 조회
     const userIdCheck = await findUserById(userId);
 
     const nickNameCheck = await findUserByName(nickName);
@@ -40,7 +41,7 @@ router.post("/sign-up", async (req, res) => {
       nickName,
     });
   } catch (err) {
-    console.error("회원가입 에러", err);
+    console.error("회원가입 에러:", err);
     return res.status(500).json({ message: "회원가입 처리 중 오류가 발생했습니다." });
   }
 });
@@ -48,6 +49,36 @@ router.post("/sign-up", async (req, res) => {
 /**
  * @desc 로그인 API
  */
+
+router.post("/sign-in", async (req, res) => {
+  try {
+    // 요청값
+    const { userId, password } = req.body;
+
+    //아이디 조회
+    const user = await findUserById(userId);
+
+    //유효성 검사
+    if (!user) {
+      return res.status(401).json({ message: "존재하지 않는 아이디 입니다." });
+    }
+
+    const decodedPassword = await bcrypt.compare(password, user.password);
+    if (!decodedPassword) {
+      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+    }
+    //로그인 정보 갱신
+    await updateUserLogin(userId);
+    return res.status(200).json({
+      message: "로그인에 성공했습니다.",
+      userId: user.userId,
+      nickName: user.nickName,
+    });
+  } catch (err) {
+    console.error("로그인 에러:", err);
+    return res.status(500).json({ message: "로그인 처리 중 오류가 발생했습니다." });
+  }
+});
 
 /**
  * @desc 회원정보 수정 API
