@@ -1,6 +1,7 @@
 import { toCamelCase } from "../../../utils/response/transformCase.js";
 import pools from "../database.js";
 import { SQL_QUERIES } from "../sql.queries.js";
+import bcrypt from "bcrypt";
 
 /**
  * @desc 유저 조회, 생성, 수정, 삭제, 로그인 정보 갱신
@@ -32,18 +33,41 @@ export const createUser = async (userId, nickName, password) => {
     console.error("회원가입 ERROR:", err);
   }
 };
-
-export const updateUserData = async (userId, newPassword) => {
+export const updateUserData = async (userId, updateData) => {
   try {
-    //새로 생성한 비밀번호 해시화
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const [rows] = await pools.USER_DB.query(SQL_QUERIES.UPDATE_USER_DATA, [
-      hashedPassword,
-      userId,
-    ]);
+    const fields = [];
+    const values = [];
+
+    if (updateData.password) {
+      const hashedPassword = await bcrypt.hash(updateData.password, 10);
+      fields.push("password = ?");
+      values.push(hashedPassword);
+    }
+
+    if (updateData.nickName) {
+      fields.push("nickName = ?");
+      values.push(updateData.nickName);
+    }
+
+    if (fields.length === 0) return false; // 변경할 항목이 없음
+
+    const query = `UPDATE User SET ${fields.join(", ")} WHERE userId = ?`;
+    values.push(userId);
+
+    const [rows] = await pools.USER_DB.query(query, values);
     return rows.affectedRows > 0;
   } catch (err) {
-    console.error("비밀번호 수정 ERROR:", err);
+    console.error("회원 정보 수정 ERROR:", err);
+    return false;
+  }
+};
+
+export const deleteUserData = async (userId) => {
+  try {
+    const [rows] = await pools.USER_DB.query(SQL_QUERIES.DELETE_USER, [userId]);
+    return rows.affectedRows > 0;
+  } catch (err) {
+    console.error("회원 탈퇴 ERROR:", err);
   }
 };
 

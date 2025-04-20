@@ -1,6 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import { createUser, findUserById, findUserByName, updateUserLogin } from "../db/user/user.db.js";
+import {
+  createUser,
+  deleteUserData,
+  findUserById,
+  findUserByName,
+  updateUserData,
+  updateUserLogin,
+} from "../db/user/user.db.js";
 
 const router = express.Router();
 
@@ -83,5 +90,46 @@ router.post("/sign-in", async (req, res) => {
 /**
  * @desc 회원정보 수정 API
  */
+
+router.patch("/users/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { currentPassword, newPassword, newNickName } = req.body;
+
+    const user = await findUserById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "존재하지 않는 사용자입니다." });
+    }
+
+    // 닉네임 중복 체크
+    if (newNickName) {
+      if (newNickName === user.nickName) {
+        return res.status(409).json({ message: "현재 사용중인 이름 입니다." });
+      }
+
+      const currentUserName = await findUserByName(newNickName);
+      if (currentUserName) {
+        return res.status(409).json({ message: "이미 존재하는 이름 입니다." });
+      }
+    }
+
+    // 비밀번호 확인
+    const passwordCheck = await bcrypt.compare(currentPassword, user.password);
+    if (!passwordCheck) {
+      return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
+    }
+
+    // 동적 업데이트 적용
+    const updated = await updateUserData(userId, {
+      password: newPassword,
+      nickName: newNickName,
+    });
+
+    return res.status(200).json({ message: "회원정보 수정에 성공했습니다." });
+  } catch (err) {
+    console.error("회원정보 수정 에러:", err);
+    return res.status(500).json({ message: "회원정보 수정 처리 중 오류가 발생했습니다." });
+  }
+});
 
 export default router;
