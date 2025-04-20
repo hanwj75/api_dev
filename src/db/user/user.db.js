@@ -37,7 +37,10 @@ export const updateUserData = async (userId, newPassword) => {
   try {
     //새로 생성한 비밀번호 해시화
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const [rows] = await pools.USER_DB.query(SQL_QUERIES.UPDATE_USER_DATA, [newPassword, userId]);
+    const [rows] = await pools.USER_DB.query(SQL_QUERIES.UPDATE_USER_DATA, [
+      hashedPassword,
+      userId,
+    ]);
     return rows.affectedRows > 0;
   } catch (err) {
     console.error("비밀번호 수정 ERROR:", err);
