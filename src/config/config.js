@@ -6,6 +6,7 @@ const config = {
   server: {
     PORT: env.PORT,
     HOST: env.HOST,
+    JWT: env.JWT_KEY,
   },
 };
 
