@@ -89,6 +89,7 @@ router.post("/sign-in", async (req, res, next) => {
       message: "로그인에 성공했습니다.",
       userId: user.userId,
       nickName: user.nickName,
+      token,
     });
   } catch (err) {
     console.error("로그인 에러:", err);
