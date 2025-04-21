@@ -6,6 +6,7 @@ const envFiles = {
   server: {
     PORT: env.PORT || 3000,
     HOST: env.HOST || "localhost",
+    JWT_KEY: env.JWT_KEY,
   },
   database: {
     DB1_NAME: env.DB1_NAME || "DB_NAME",

@@ -8,6 +8,9 @@ import {
   updateUserData,
   updateUserLogin,
 } from "../db/user/user.db.js";
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -15,7 +18,7 @@ const router = express.Router();
  * @desc 회원가입 API
  */
 
-router.post("/sign-up", async (req, res) => {
+router.post("/sign-up", async (req, res, next) => {
   try {
     // 요청값
     const { userId, password, passwordCheck, nickName } = req.body;
@@ -57,7 +60,7 @@ router.post("/sign-up", async (req, res) => {
  * @desc 로그인 API
  */
 
-router.post("/sign-in", async (req, res) => {
+router.post("/sign-in", async (req, res, next) => {
   try {
     // 요청값
     const { userId, password } = req.body;
@@ -74,8 +77,14 @@ router.post("/sign-in", async (req, res) => {
     if (!decodedPassword) {
       return res.status(401).json({ message: "비밀번호가 틀렸습니다." });
     }
+    //토큰 발급
+    const { JWT } = config.server;
+    const token = jwt.sign({ userId: user.userId }, JWT, { expiresIn: "30m" });
+    res.setHeader("Authorization", `${JWT} ${token}`);
+    console.log(token);
     //로그인 정보 갱신
     await updateUserLogin(userId);
+
     return res.status(200).json({
       message: "로그인에 성공했습니다.",
       userId: user.userId,
@@ -91,9 +100,10 @@ router.post("/sign-in", async (req, res) => {
  * @desc 회원정보 수정 API
  */
 
-router.patch("/users/:userId", async (req, res) => {
+router.patch("/users/me", authMiddleware, async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.user;
+    console.log("토큰유저아이디", userId);
     const { currentPassword, newPassword, newNickName } = req.body;
 
     const user = await findUserById(userId);
@@ -136,9 +146,9 @@ router.patch("/users/:userId", async (req, res) => {
  * @desc 회원탈퇴 API
  */
 
-router.delete("/users/:userId", async (req, res) => {
+router.delete("/users/me", authMiddleware, async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.user;
     const { password } = req.body;
     const user = await findUserById(userId);
     if (!user) {
