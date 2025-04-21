@@ -56,7 +56,7 @@ router.get("/posts/:postId", async (req, res, next) => {
   try {
     const { postId } = req.params;
     const post = await findPostById(postId);
-    console.log(post);
+
     if (!post) {
       return res.status(404).json({ message: "게시물이 존재하지 않습니다." });
     }

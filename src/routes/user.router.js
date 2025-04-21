@@ -81,7 +81,7 @@ router.post("/sign-in", async (req, res, next) => {
     const { JWT } = config.server;
     const token = jwt.sign({ userId: user.userId }, JWT, { expiresIn: "30m" });
     res.setHeader("Authorization", `${JWT} ${token}`);
-    console.log(token);
+
     //로그인 정보 갱신
     await updateUserLogin(userId);
 
@@ -104,7 +104,7 @@ router.post("/sign-in", async (req, res, next) => {
 router.patch("/users/me", authMiddleware, async (req, res, next) => {
   try {
     const { userId } = req.user;
-    console.log("토큰유저아이디", userId);
+
     const { currentPassword, newPassword, newNickName } = req.body;
 
     const user = await findUserById(userId);
