@@ -1,6 +1,12 @@
 import express from "express";
 import authMiddleware from "../middlewares/auth.middleware.js";
-import { createPost, findAllPost, findPostById, updatePostData } from "../db/post/post.db.js";
+import {
+  createPost,
+  deletePost,
+  findAllPost,
+  findPostById,
+  updatePostData,
+} from "../db/post/post.db.js";
 
 const router = express.Router();
 
@@ -78,6 +84,10 @@ router.patch("/posts/:postId", authMiddleware, async (req, res, next) => {
     const post = await findPostById(postId);
 
     //유효성 검사
+    if (!title && !content) {
+      return res.status(400).json({ message: "수정할 내용이 없습니다." });
+    }
+
     if (!post) {
       return res.status(404).json({ message: "게시물이 존재하지 않습니다." });
     }
@@ -101,5 +111,30 @@ router.patch("/posts/:postId", authMiddleware, async (req, res, next) => {
 /**
  * @desc 게시물 삭제 API
  */
+
+router.delete("/posts/:postId", authMiddleware, async (req, res, next) => {
+  try {
+    const { userId } = req.user;
+    const { postId } = req.params;
+    const post = await findPostById(postId);
+
+    //유효성 검사
+    if (!post) {
+      return res.status(404).json({ message: "게시물이 존재하지 않습니다." });
+    }
+
+    if (post.userId !== userId) {
+      return res.status(403).json({ message: "게시물 삭제 권한이 없습니다." });
+    }
+    await deletePost(postId);
+    return res.status(200).json({
+      message: "게시물 삭제 성공",
+      postId,
+    });
+  } catch (err) {
+    console.error("게시물 삭제 중 오류가 발생했습니다", err);
+    return res.status(500).json({ message: "게시물 삭제 중 오류가 발생했습니다." });
+  }
+});
 
 export default router;

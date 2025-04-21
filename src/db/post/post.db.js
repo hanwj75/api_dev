@@ -56,3 +56,13 @@ export const updatePostData = async (postId, postData) => {
     return false;
   }
 };
+
+export const deletePost = async (postId) => {
+  try {
+    const [rows] = await pools.POST_DB.query(SQL_QUERIES.DELETE_POST, [postId]);
+    return rows.affectedRows > 0;
+  } catch (err) {
+    console.error("게시물 삭제 ERROR:", err);
+    return false;
+  }
+};
