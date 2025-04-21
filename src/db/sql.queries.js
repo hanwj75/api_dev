@@ -8,6 +8,7 @@ export const SQL_QUERIES = {
 
   //post
   FIND_POST_BY_ID: "SELECT * FROM Post WHERE id = ?",
+  FIND_ALL_POSTS: "SELECT * FROM Post",
   CREATE_POST: "INSERT INTO Post (userId, title, content) VALUES (?,?,?)",
   UPDATE_POST: "UPDATE Post SET title = ?, content = ? WHERE id = ?",
   DELETE_POST: "DELETE FROM Post WHERE id = ?",
