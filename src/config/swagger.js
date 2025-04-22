@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3333", // API 서버 URL
+        url: "http://13.125.26.148:3333", // API 서버 URL
       },
     ],
     components: {
