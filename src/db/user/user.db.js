@@ -1,4 +1,4 @@
-import { toCamelCase } from "../../../utils/response/transformCase.js";
+import { toCamelCase } from "../../utils/response/transformCase.js";
 import pools from "../database.js";
 import { SQL_QUERIES } from "../sql.queries.js";
 import bcrypt from "bcrypt";

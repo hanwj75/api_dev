@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise";
-import { formatDate } from "../../utils/response/dateFormatter.js";
+import { formatDate } from "../utils/response/dateFormatter.js";
 import dbConfig from "../config/dbConfig.js";
 
 const { database } = dbConfig;
