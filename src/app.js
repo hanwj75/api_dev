@@ -1,9 +1,9 @@
 import express from "express";
-import config from "./src/config/config.js";
-import initServer from "./src/init/index.js";
-import userRouter from "./src/routes/user.router.js";
-import postRouter from "./src/routes/post.router.js";
-import { specs, swaggerUi } from "./src/config/swagger.js";
+import config from "./config/config.js";
+import initServer from "./init/index.js";
+import userRouter from "./routes/user.router.js";
+import postRouter from "./routes/post.router.js";
+import { specs, swaggerUi } from "./config/swagger.js";
 
 const app = express();
 const { server } = config;
